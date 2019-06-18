@@ -7,3 +7,4 @@ dependencies:
   - flask
   - flask-sqlalchemy
   - pyyaml
+  - flask_restful

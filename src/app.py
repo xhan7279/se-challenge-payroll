@@ -1,15 +1,14 @@
 from flask import Flask
 import configparser
-import logging
-import logging.config
-from model import engine
-import sqlalchemy
+from flask_restful import Api
+from resource.UploadResource import UploadResource
+from service import logger
+from model import db
 
-logger = None
+app = Flask(__name__)
 
 
 def init_app(server):
-    logger = init_logging()
     conf_fpath = 'config.ini'
     config = configparser.ConfigParser()
 
@@ -18,20 +17,28 @@ def init_app(server):
     server.config['SQLALCHEMY_DATABASE_URI'] = config.get('Database', 'connection_uri')
     server.config['SERVER_NAME'] = config.get('Server', 'Name')
     server.config['SECRET_KEY'] = config.get('Server', 'SecretKey')
-
-    engine = sqlalchemy.create_engine(config.get('Database', 'Connection_Uri'))
-    logger.info(f"engine created ={engine}")
+    server.config['UPLOAD_FOLDER'] = config.get('Server', 'UploadFolder')
 
     return server
 
 
-def init_logging():
-    logging.config.fileConfig("log.ini")
-    return logging.getLogger('root')
+def init_resources(server):
+    logger.info(server)
+    api = Api(server)
+    api.add_resource(UploadResource, '/upload')
+
+
+def init_db(server):
+    with app.app_context():
+        db.init_app(app=server)
+        db.create_all()
+    logger.info(f"Init db={db}")
 
 
 def main():
-    server = init_app(Flask(__name__))
+    server = init_app(app)
+    init_db(server=server)
+    init_resources(server=server)
     server.run()
 
 
