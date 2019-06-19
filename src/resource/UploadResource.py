@@ -1,11 +1,8 @@
 import os
 from flask import request, make_response, jsonify
 from flask_restful import Resource
-from werkzeug.utils import secure_filename
 from . import RESOURCE_NOT_FOUND, RESOURCE_OK, error_resp, success_resp
-from service import logger
 from service.FileService import FileService
-import pandas as pd
 
 ALLOWED_EXTENSIONS = set(['csv'])
 

@@ -1,7 +1,6 @@
 from flask import Flask
 import configparser
 from flask_restful import Api
-from resource.UploadResource import UploadResource
 from service import logger
 
 app = Flask(__name__)
@@ -22,9 +21,12 @@ def init_app(server):
 
 
 def init_resources(server):
-    logger.info(server)
+    from resource.UploadResource import UploadResource
+    from resource.ReportResource import ReportResource
+
     api = Api(server)
     api.add_resource(UploadResource, '/upload')
+    api.add_resource(ReportResource, '/report')
 
 
 def init_db(server):
@@ -34,9 +36,28 @@ def init_db(server):
         from model.Employee import EmployeeModel
         from model.Files import FilesModel
         from model.History import HistoryModel
+        from model.Rate import RateModel
         db.init_app(app=server)
         db.create_all()
+        init_values()
         logger.info(f"Init db={db}")
+
+
+def init_values():
+    from model.Rate import RateModel
+    from model import db
+    a_rate = RateModel(rate=20, jid=1)
+    b_rate = RateModel(rate=30, jid=2)
+    session = db.session()
+    try:
+        session.add(a_rate)
+        session.add(b_rate)
+        session.commit()
+    except Exception as e:
+        logger.error(e)
+        session.rollback()
+    finally:
+        db.session.remove()
 
 
 def main():

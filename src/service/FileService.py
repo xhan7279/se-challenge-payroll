@@ -1,5 +1,6 @@
 from service import logger
 from model.Files import FilesModel
+from model import transaction
 from service.HistoryService import HistoryService
 from service.JobGroupService import JobGroupService
 import pandas as pd
@@ -7,15 +8,19 @@ import pandas as pd
 
 class FileService:
     @staticmethod
-    def upload(file):
+    @transaction
+    def upload(session, file):
         try:
             df, fname = FileService.parse_file(file)
             if not FileService.check_fname(fname=fname):
                 raise ValueError("File already uploaded.")
             else:
-                logger.info(f"Adding data={df.head()}")
-                JobGroupService.add(df)
-                HistoryService.add(df)
+                logger.info(f"Adding file={fname}")
+                file = FilesModel(name=fname)
+                session.add(file)
+                fid = FilesModel.query.filter_by(name=fname).first().id
+                JobGroupService.add(df=df)
+                HistoryService.add(df=df, fid=fid)
 
         except Exception as e:
             logger.error(e)

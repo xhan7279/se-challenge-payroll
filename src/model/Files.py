@@ -1,4 +1,5 @@
 from . import db
+import datetime
 
 
 class FilesModel(db.Model):
@@ -12,3 +13,8 @@ class FilesModel(db.Model):
 
     def __repr__(self):
         return f"File={self.name} uploaded at {self.date}"
+
+    def __init__(self, name):
+        self.name = name
+        self.date = datetime.datetime.now()
+

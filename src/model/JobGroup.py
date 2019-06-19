@@ -8,6 +8,7 @@ class JobGroupModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     history = db.relationship('HistoryModel', backref='jobgroup', lazy=True)
+    rate = db.relationship('RateModel', backref='jobgroup', lazy=True)
 
     def __repr__(self):
         return f"Job Group={self.name} id={self.id}"

@@ -15,9 +15,10 @@ class HistoryModel(db.Model):
     def __repr__(self):
         return f"Payment history={self.date} employee={self.eid} hours={self.hours}"
 
-    def __init__(self, date, hours, eid, jid):
+    def __init__(self, date, hours, eid, jid, fid):
         self.date = date
         self.hours = hours
         self.eid = eid
         self.jid = jid
+        self.fid = fid
 
