@@ -25,11 +25,9 @@ class UploadResource(Resource):
                 if file.filename == '':
                     return error_resp('Invalid file name.'), RESOURCE_NOT_FOUND
                 if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    logger.info(f"file={file}, name={filename}")
-                    FileService.upload(file=file, filename=filename)
+                    FileService.upload(file)
                     return success_resp("Success"), RESOURCE_OK
                 else:
                     return error_resp('Invalid file type.'), RESOURCE_NOT_FOUND
         except ValueError as e:
-            return error_resp(e), RESOURCE_NOT_FOUND
+            return error_resp(str(e)), RESOURCE_NOT_FOUND

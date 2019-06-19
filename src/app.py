@@ -3,7 +3,6 @@ import configparser
 from flask_restful import Api
 from resource.UploadResource import UploadResource
 from service import logger
-from model import db
 
 app = Flask(__name__)
 
@@ -30,9 +29,14 @@ def init_resources(server):
 
 def init_db(server):
     with app.app_context():
+        from model import db
+        from model.JobGroup import JobGroupModel
+        from model.Employee import EmployeeModel
+        from model.Files import FilesModel
+        from model.History import HistoryModel
         db.init_app(app=server)
         db.create_all()
-    logger.info(f"Init db={db}")
+        logger.info(f"Init db={db}")
 
 
 def main():
