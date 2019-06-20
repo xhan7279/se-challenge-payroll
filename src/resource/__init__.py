@@ -9,9 +9,9 @@ def error_resp(message):
     return resp
 
 
-def success_resp(message=None):
+def success_resp(data=None):
     resp = {}
     resp['Status'] = 'Success'
-    if message != None:
-        resp['Message'] = message
+    if data != None:
+        resp['Data'] = data
     return resp

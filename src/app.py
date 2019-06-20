@@ -1,9 +1,9 @@
-from flask import Flask
+from flask import Flask, render_template
 import configparser
 from flask_restful import Api
 from service import logger
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='templates', template_folder='templates')
 
 
 def init_app(server):
@@ -58,6 +58,12 @@ def init_values():
         session.rollback()
     finally:
         db.session.remove()
+
+
+# Serving templates HTML for now
+@app.route("/")
+def uploadFile():
+    return render_template('index.html')
 
 
 def main():

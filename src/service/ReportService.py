@@ -14,7 +14,7 @@ class RepportService:
             df['amountpaid'] = df['hours'].astype(float) * df['rate'].astype(float)
             df['payperiod'] = df['date'].apply(lambda x: f"1/{x.month}/{x.year} - 15/{x.month}/{x.year}" if x.day <=15 else f"16/{x.month}/{x.year} - 30/{x.month}/{x.year}")
             df = df[['payperiod', 'eid', 'amountpaid']].groupby(['payperiod', 'eid']).sum().reset_index()
-            return df
+            return df.to_json(orient="records")
 
         except Exception as e:
             logger.error(e)

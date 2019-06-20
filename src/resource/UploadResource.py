@@ -1,5 +1,5 @@
 import os
-from flask import request, make_response, jsonify
+from flask import request
 from flask_restful import Resource
 from . import RESOURCE_NOT_FOUND, RESOURCE_OK, error_resp, success_resp
 from service.FileService import FileService
