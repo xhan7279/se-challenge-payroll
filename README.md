@@ -197,9 +197,15 @@ off one of your strengths.
 
 Please modify `README.md` to add:
 
-1. Instructions on how to build/run your application
-1. A paragraph or two about what you are particularly proud of in your
+1.Install
+pip install -r requirements.txt
+cd src
+python app.py
+website will be running at 127.0.0.1:5001
+
+2.A paragraph or two about what you are particularly proud of in your
    implementation, and why.
+The back-end is designed in a modular structure with ORM layer, services and resource endpoints, as it is easier to develop and test. Database and UI are lightweighted and implemented with sqlite and JavaScript. 
 
 ## Submission Instructions
 
